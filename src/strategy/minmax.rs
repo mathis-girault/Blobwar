@@ -9,9 +9,44 @@ pub struct MinMax(pub u8);
 
 impl Strategy for MinMax {
     fn compute_next_move(&mut self, state: &Configuration) -> Option<Movement> {
-        unimplemented!("TODO: implementer min max")
+        
+        let mut best_move: Option<Movement> = None;
+        let mut best_score = i8::MIN;
+
+        for movement in state.movements() {
+            let next_state = state.play(&movement);
+            let score = min_max(&next_state, self.0, false);
+            if score > best_score {
+                best_score = score;
+                best_move = Some(movement);
+            }
+        }
+
+        best_move
     }
 }
+
+
+fn min_max(state: &Configuration, depth: u8, max_player: bool) -> i8 {
+    if depth == 0 {
+        return state.value();
+    }
+
+    let mut best_score = if max_player { i8::MIN } else { i8::MAX };
+
+    for movement in state.movements() {
+        let next_state = state.play(&movement);
+        let score = min_max(&next_state, depth - 1, !max_player);
+        if max_player {
+            best_score = std::cmp::max(best_score, score);
+        } else {
+            best_score = std::cmp::min(best_score, score);
+        }
+    }
+
+    best_score
+}
+
 
 impl fmt::Display for MinMax {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
