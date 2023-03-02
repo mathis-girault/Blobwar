@@ -36,21 +36,17 @@ fn min_max(state: &Configuration, real_depth: u8, depth: u8, max_player: bool) -
 
     let mut best_score = if max_player {i8::MIN} else {i8::MAX};
 
-    
-    if max_player {
-        for movement in state.movements() {
-            let next_state = state.play(&movement);
-            let score = min_max(&next_state, real_depth, depth - 1, !max_player);
-            best_score = std::cmp::max(best_score, score);
-        }
+    for movement in state.movements() {
+        let next_state = state.play(&movement);
+        let score = min_max(&next_state, real_depth, depth - 1, !max_player);
 
-    } else {
-        for movement in state.movements() {
-            let next_state = state.play(&movement);
-            let score = min_max(&next_state, real_depth, depth - 1, !max_player);
+        if max_player {
+            best_score = std::cmp::max(best_score, score);
+        } else {
             best_score = std::cmp::min(best_score, score);
         }
     }
+
 
 
     best_score
