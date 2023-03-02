@@ -8,6 +8,10 @@ pub struct MinMax(pub u8);
 
 
 impl Strategy for MinMax {
+    /** 
+     * Fonction qui renvoie le meilleur mouvement possible pour une profondeur de récursion
+     * donnée et en suivant l'algorithme de MinMax.
+     */
     fn compute_next_move(&mut self, state: &Configuration) -> Option<Movement> {
         
         let mut best_move: Option<Movement> = None;
@@ -15,7 +19,7 @@ impl Strategy for MinMax {
 
         for movement in state.movements() {
             let next_state = state.play(&movement);
-            let score = min_max(&next_state, self.0, self.0, false);
+            let score = min_max(&next_state, self.0, 0 == (self.0 % 2), false);
             
             if score > best_score {
                 best_score = score;
@@ -28,17 +32,30 @@ impl Strategy for MinMax {
 }
 
 
-fn min_max(state: &Configuration, real_depth: u8, depth: u8, max_player: bool) -> i8 {
+
+/** 
+ * Fonction recursive qui implemente l'algorithme de MinMax pour le blobwar.
+ * @params state l'etat de jeu actuel
+ * @params depth la pronfondeur actuelle de récursion
+ * @params even_depth la parité de pronfondeur de départ
+ * @params max_player le joueur courant pour le calcul
+ *
+ * @returns elle renvoie le meilleur score pour la pronfondeur de récursion demandée
+ * en suivant la méthode de MinMax.
+ */
+fn min_max(state: &Configuration, depth: u8, even_depth: bool, max_player: bool) -> i8 {
     
     if depth == 0 {
-        return (-1 as i8).pow(real_depth as u32)*state.value();
+        // En fonction de la valeur de even_depth, on renvoie la valeur en négatif ou positif 
+        // car le gain calculé dépend du joueur courant, et donc de la pronfondeur d'appel
+        return if even_depth {state.value()} else {-state.value()};
     }
 
     let mut best_score = if max_player {i8::MIN} else {i8::MAX};
 
     for movement in state.movements() {
         let next_state = state.play(&movement);
-        let score = min_max(&next_state, real_depth, depth - 1, !max_player);
+        let score = min_max(&next_state, depth - 1, even_depth, !max_player);
 
         if max_player {
             best_score = std::cmp::max(best_score, score);
@@ -46,8 +63,6 @@ fn min_max(state: &Configuration, real_depth: u8, depth: u8, max_player: bool) -
             best_score = std::cmp::min(best_score, score);
         }
     }
-
-
 
     best_score
 }
