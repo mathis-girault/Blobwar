@@ -9,5 +9,5 @@ fn main() {
     let mut game = Configuration::new(&board);
     // game.battle(MinMax(1), Greedy());
     //game.battle(Greedy(), MinMax(1));
-    game.battle(MinMax(1), MinMax(1));
+    game.battle(MinMax(3), MinMax(1));
 }
