@@ -124,12 +124,12 @@ impl<'a> Configuration<'a> {
     /// Play a match between the given players starting from current `Configuration`.
     pub fn battle<T: Strategy, U: Strategy>(&mut self, mut player_one: T, mut player_two: U) {
         while !self.game_over() {
-            println!(
-                "{} player's turn (he is losing by {} before playing)",
-                ["red", "blue"][self.current_player as usize],
-                self.value()
-            );
-            println!("{}", self);
+            // println!(
+            //     "{} player's turn (he is losing by {} before playing)",
+            //     ["red", "blue"][self.current_player as usize],
+            //     self.value()
+            // );
+            // println!("{}", self);
             let play_attempt = if self.current_player {
                 player_two.compute_next_move(self)
             } else {
