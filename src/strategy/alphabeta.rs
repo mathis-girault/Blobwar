@@ -60,7 +60,7 @@ impl Strategy for AlphaBeta {
  * @returns elle renvoie le meilleur score pour la pronfondeur de récursion demandée
  * en suivant la méthode de alpha-beta.
  */
-fn alpha_beta(state: &Configuration, depth: u8, even_depth: bool, max_player: bool, mut alpha: i8, beta: i8) -> i8 {
+fn alpha_beta(state: &Configuration, depth: u8, even_depth: bool, max_player: bool, mut alpha: i8, mut beta: i8) -> i8 {
     
     if depth == 0 {
         // En fonction de la valeur de even_depth, on renvoie la valeur en négatif ou positif 
@@ -94,11 +94,5 @@ fn alpha_beta(state: &Configuration, depth: u8, even_depth: bool, max_player: bo
 impl fmt::Display for AlphaBeta {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Alpha - Beta (max level: {})", self.0)
-    }
-}
-
-impl Strategy for AlphaBeta {
-    fn compute_next_move(&mut self, state: &Configuration) -> Option<Movement> {
-        unimplemented!("implementer alpha beta")
     }
 }
