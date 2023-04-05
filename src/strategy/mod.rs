@@ -16,6 +16,7 @@ pub use self::network::NetworkPlayer;
 pub mod greedy;
 pub use self::greedy::Greedy;
 pub mod minmax;
+pub mod minmax_par;
 pub use self::minmax::{min_max_anytime, MinMax};
 pub mod alphabeta;
 pub use self::alphabeta::{alpha_beta_anytime, AlphaBeta};
